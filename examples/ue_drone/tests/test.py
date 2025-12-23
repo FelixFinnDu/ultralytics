@@ -1,7 +1,9 @@
-from ultralytics import settings
+from ultralytics import YOLO
 
-# View all settings
-print(settings)
+# Load a model
+model = YOLO("yolo11n.yaml")  # build a new model from YAML
+model = YOLO("yolo11n.pt")  # load a pretrained model (recommended for training)
+model = YOLO("yolo11n.yaml").load("yolo11n.pt")  # build from YAML and transfer weights
 
-# Return a specific setting
-value = settings["runs_dir"]
+# Train the model
+results = model.train(data="../datasets/ue5_yolo_dataset/data.yaml", epochs=2)

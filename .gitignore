@@ -199,3 +199,6 @@ calibration_*.npy
 *.heic
 *.ico
 *.raw
+
+# Unreal Engine drone datasets
+examples/ue_drone/datasets
