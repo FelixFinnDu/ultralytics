@@ -68,6 +68,8 @@ from ultralytics.nn.modules import (
     YOLOEDetect,
     YOLOESegment,
     v10Detect,
+    MyConv,
+    UFNONet,
 )
 from ultralytics.utils import DEFAULT_CFG_DICT, LOGGER, YAML, colorstr, emojis
 from ultralytics.utils.checks import check_requirements, check_suffix, check_yaml
@@ -1645,6 +1647,15 @@ def parse_model(d, ch, verbose=True):
             args = [*args[1:]]
         else:
             c2 = ch[f]
+        # 在parse_model函数中
+        if m is MyConv:  
+            # 自动将前一层输出通道数作为当前模块输入通道c1
+            c1, c2 = ch[f], args[0]  
+            args = [c1, c2, *args[1:]]       
+        if m is UFNONet:
+            c1 = ch[f]
+            args = [*args[:2], c1, args[2]]
+            # args = [*args]
 
         m_ = torch.nn.Sequential(*(m(*args) for _ in range(n))) if n > 1 else m(*args)  # module
         t = str(m)[8:-2].replace("__main__.", "")  # module type
