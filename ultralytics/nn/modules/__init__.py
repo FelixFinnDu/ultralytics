@@ -105,6 +105,7 @@ from .transformer import (
 from .my_block import (
     MyConv,
     UFNONet,
+    AFNONet,
 )
 
 __all__ = (
@@ -186,4 +187,5 @@ __all__ = (
     "v10Detect",
     "MyConv",
     "UFNONet",
+    "AFNONet",
 )
