@@ -176,8 +176,16 @@ class UFNONet(nn.Module):
         self.fc1 = nn.Linear(self.width, width2)
         self.fc2 = nn.Linear(width2, 3)
 
+        self.branch1 = nn.Conv2d(self.width, 64, kernel_size=8, stride=8, padding=0)
+        
+        # 分支2：缩小16倍 → 40×40
+        self.branch2 = nn.Conv2d(self.width, 128, kernel_size=16, stride=16, padding=0)
+        
+        # 分支3：缩小32倍 → 20×20
+        self.branch3 = nn.Conv2d(self.width, 192, kernel_size=32, stride=32, padding=0)
+        
     def forward(self, x):
-        # x_ = x
+        x_ = x
         batchsize = x.shape[0]
         size_x, size_y = x.shape[2], x.shape[3]
 
@@ -222,7 +230,17 @@ class UFNONet(nn.Module):
 
         x = x.view(batchsize, 3, size_x, size_y)
         # x = x.view(batchsize, self.width2, size_x, size_y)
+        attn_out = (x_ - x) * x_  # elementwise fusion to replace costly attention
+        # attn_out = (x_ - x) + x_ 
+        x = x_ + attn_out
 
+        # feat1 = self.branch1(x)   # [1, 64, 80, 80]
+        # feat2 = self.branch2(x)   # [1, 128, 40, 40]
+        # feat3 = self.branch3(x)   # [1, 192, 20, 20]
+        # outs = []
+        # outs.append(feat1)
+        # outs.append(feat2)
+        # outs.append(feat3)
         return x
 
     
