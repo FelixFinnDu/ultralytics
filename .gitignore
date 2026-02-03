@@ -199,3 +199,5 @@ calibration_*.npy
 *.heic
 *.ico
 *.raw
+
+examples/ue_drone
