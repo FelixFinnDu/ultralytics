@@ -200,4 +200,8 @@ calibration_*.npy
 *.ico
 *.raw
 
+# Training logs
+args.yaml
+results.csv
+
 examples/ue_drone
